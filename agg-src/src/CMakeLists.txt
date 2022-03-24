@@ -157,39 +157,7 @@ ADD_LIBRARY( antigrain
     ${antigrain_HEADERS}
 )
 
-#controls code for interactive modifying samples
-IF( agg_BUILD_CONTROLS )
-    SET( controls_HEADERS
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_slider_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_spline_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_scale_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_rbox_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_polygon_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_gamma_spline.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_gamma_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_cbox_ctrl.h
-	${antigrain_SOURCE_DIR}/include/ctrl/agg_bezier_ctrl.h
-    )
 
-    ADD_LIBRARY( controls
-	ctrl/agg_spline_ctrl.cpp
-	ctrl/agg_slider_ctrl.cpp
-	ctrl/agg_scale_ctrl.cpp
-	ctrl/agg_rbox_ctrl.cpp
-	ctrl/agg_polygon_ctrl.cpp
-	ctrl/agg_gamma_spline.cpp
-	ctrl/agg_gamma_ctrl.cpp
-	ctrl/agg_cbox_ctrl.cpp
-	ctrl/agg_bezier_ctrl.cpp
-
-	${controls_HEADERS}
-    )
-    TARGET_INCLUDE_DIRECTORIES( controls PRIVATE ${antigrain_SOURCE_DIR}/include )
-    TARGET_INCLUDE_DIRECTORIES( controls PUBLIC ${antigrain_SOURCE_DIR}/include/ctrl )
-    TARGET_LINK_LIBRARIES( antigrain PUBLIC controls )
-
-ENDIF( agg_BUILD_CONTROLS )
 
 # the main include dir of Agg
 TARGET_INCLUDE_DIRECTORIES( antigrain PUBLIC ${antigrain_SOURCE_DIR}/include )
@@ -260,7 +228,6 @@ IF( agg_BUILD_PLATFORM )
 
 	            ${platform_HEADERS}
 	)
-        TARGET_INCLUDE_DIRECTORIES( platform PRIVATE ${antigrain_SOURCE_DIR}/include )
 	TARGET_INCLUDE_DIRECTORIES( platform PUBLIC ${antigrain_SOURCE_DIR}/font_win32_tt )
             INSTALL( FILES ../font_win32_tt/agg_font_win32_tt.h DESTINATION agg/font_win32_tt )
     ENDIF(WIN32)
@@ -279,7 +246,7 @@ IF( agg_BUILD_PLATFORM )
 	            ${platform_HEADERS}
 	)
     ENDIF(APPLE)
-
+    TARGET_INCLUDE_DIRECTORIES( platform PRIVATE ${antigrain_SOURCE_DIR}/include )
     ##################################################
     # Set all includes, flags, libraries, related to SDL
     ##################################################
@@ -309,6 +276,39 @@ IF( agg_BUILD_PLATFORM )
     ENDIF( SDL_FOUND )
 
 ENDIF( agg_BUILD_PLATFORM )
+
+#controls code for interactive modifying samples
+IF( agg_BUILD_CONTROLS )
+    SET( controls_HEADERS
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_slider_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_spline_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_scale_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_rbox_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_polygon_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_gamma_spline.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_gamma_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_cbox_ctrl.h
+        ${antigrain_SOURCE_DIR}/include/ctrl/agg_bezier_ctrl.h
+    )
+
+    ADD_LIBRARY( controls
+        ctrl/agg_spline_ctrl.cpp
+        ctrl/agg_slider_ctrl.cpp
+        ctrl/agg_scale_ctrl.cpp
+        ctrl/agg_rbox_ctrl.cpp
+        ctrl/agg_polygon_ctrl.cpp
+        ctrl/agg_gamma_spline.cpp
+        ctrl/agg_gamma_ctrl.cpp
+        ctrl/agg_cbox_ctrl.cpp
+        ctrl/agg_bezier_ctrl.cpp
+
+        ${controls_HEADERS}
+    )
+    TARGET_INCLUDE_DIRECTORIES( controls PUBLIC ${antigrain_SOURCE_DIR}/include/ctrl )
+    TARGET_LINK_LIBRARIES( controls PUBLIC antigrain )
+
+ENDIF( agg_BUILD_CONTROLS )
 
 # boolean operations library GPC
 
